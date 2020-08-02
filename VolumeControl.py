@@ -97,6 +97,9 @@ class AudioController(object):
                 interface.SetMasterVolume(self.volume, None)
                 #print('Volume raised to', self.volume)  # debug
 
+audio_controller_1 = AudioController(target_1)
+audio_controller_2 = AudioController(target_2)
+
 def get_processes():
     global channel_1_option
     global channel_2_option
@@ -123,6 +126,15 @@ def get_processes():
     for choice in process_list:
         network_select_1['menu'].add_command(label=choice, command=tk._setit(channel_1_option, choice))
         network_select_2['menu'].add_command(label=choice, command=tk._setit(channel_2_option, choice))
+        
+    global audio_controller_1
+    global audio_controller_2
+    global target_1
+    global target_2
+    audio_controller_1 = AudioController(target_1)
+    audio_controller_2 = AudioController(target_2)
+    target_1 = channel_1_option.get()
+    target_2 = channel_2_option.get()
 
 def main():
     # Set up GUI
@@ -137,13 +149,13 @@ def main():
     global target_2
     global channel_1_option
     global channel_2_option
+    global audio_controller_1
+    global audio_controller_2
     #ser.read_until('\r')
+    target_1 = channel_1_option.get()
+    target_2 = channel_2_option.get()
     while True:
         root.update()
-        target_1 = channel_1_option.get()
-        target_2 = channel_2_option.get()
-        audio_controller_1 = AudioController(target_1)
-        audio_controller_2 = AudioController(target_2)
         
         byte_str = str(ser.readline())
         split_str = byte_str[2:][:-5].split('-')
