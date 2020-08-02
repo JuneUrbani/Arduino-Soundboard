@@ -1,0 +1,15 @@
+C:\Users\asile\Documents\Arduino-Soundboard\Soundboard\Soundboard\bin\Debug\netcoreapp3.1\Soundboard.exe
+C:\Users\asile\Documents\Arduino-Soundboard\Soundboard\Soundboard\bin\Debug\netcoreapp3.1\Soundboard.deps.json
+C:\Users\asile\Documents\Arduino-Soundboard\Soundboard\Soundboard\bin\Debug\netcoreapp3.1\Soundboard.runtimeconfig.json
+C:\Users\asile\Documents\Arduino-Soundboard\Soundboard\Soundboard\bin\Debug\netcoreapp3.1\Soundboard.runtimeconfig.dev.json
+C:\Users\asile\Documents\Arduino-Soundboard\Soundboard\Soundboard\bin\Debug\netcoreapp3.1\Soundboard.dll
+C:\Users\asile\Documents\Arduino-Soundboard\Soundboard\Soundboard\bin\Debug\netcoreapp3.1\Soundboard.pdb
+C:\Users\asile\Documents\Arduino-Soundboard\Soundboard\Soundboard\obj\Debug\netcoreapp3.1\Soundboard.csprojAssemblyReference.cache
+C:\Users\asile\Documents\Arduino-Soundboard\Soundboard\Soundboard\obj\Debug\netcoreapp3.1\Soundboard.Form1.resources
+C:\Users\asile\Documents\Arduino-Soundboard\Soundboard\Soundboard\obj\Debug\netcoreapp3.1\Soundboard.csproj.GenerateResource.cache
+C:\Users\asile\Documents\Arduino-Soundboard\Soundboard\Soundboard\obj\Debug\netcoreapp3.1\Soundboard.AssemblyInfoInputs.cache
+C:\Users\asile\Documents\Arduino-Soundboard\Soundboard\Soundboard\obj\Debug\netcoreapp3.1\Soundboard.AssemblyInfo.cs
+C:\Users\asile\Documents\Arduino-Soundboard\Soundboard\Soundboard\obj\Debug\netcoreapp3.1\Soundboard.csproj.CoreCompileInputs.cache
+C:\Users\asile\Documents\Arduino-Soundboard\Soundboard\Soundboard\obj\Debug\netcoreapp3.1\Soundboard.dll
+C:\Users\asile\Documents\Arduino-Soundboard\Soundboard\Soundboard\obj\Debug\netcoreapp3.1\Soundboard.pdb
+C:\Users\asile\Documents\Arduino-Soundboard\Soundboard\Soundboard\obj\Debug\netcoreapp3.1\Soundboard.genruntimeconfig.cache
