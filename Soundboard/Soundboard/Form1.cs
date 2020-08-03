@@ -15,6 +15,121 @@ namespace Soundboard
     public partial class Form1 : Form
     {
 
+        List<String> invalidPrograms = new List<String>()
+        {
+            "Idle",
+            "System",
+            "Registry",
+            "smss",
+            "csrss",
+            "wininit",
+            "services",
+            "lsass",
+            "svchost",
+            "WUDFHost",
+            "fontdrvhost",
+            "SynTPEnhService",
+            "NVDisplay.Container",
+            "Memory Compression",
+            "igfxCUIService",
+            "audiodg",
+            "wlanext",
+            "spoolsv",
+            "conhost",
+            "PresentationFontCache",
+            "IntelCpHDCPSvc",
+            "Everything",
+            "ibtsiva",
+            "KillerAnalyticsService",
+            "NahimicService",
+            "RtkAudUService64",
+            "LMIGuardianSvc",
+            "MSIService",
+            "MsiTrueColorService",
+            "nvcontainer",
+            "OfficeClickToRun",
+            "OriginWebHelperService",
+            "MsMpEng",
+            "KillerNetworkService",
+            "hamachi-2",
+            "IntelCpHeciSvc",
+            "xTendUtilityService",
+            "KSPSService",
+            "KNDBWMService",
+            "KSPS",
+            "xTendUtility",
+            "KNDBWM",
+            "WmiPrvSE",
+            "NisSrv",
+            "SearchIndexer",
+            "dllhost",
+            "SecurityHealthService",
+            "IAStorDataMgrSvc",
+            "jhi_service",
+            "LMS",
+            "SgrmBroker",
+            "winlogon",
+            "dwm",
+            "ctfmon",
+            "sihost",
+            "igfxEM",
+            "taskhostw",
+            "SynTPEnh",
+            "explorer",
+            "SynTPHelper",
+            "StartMenuExperienceHost",
+            "RuntimeBroker",
+            "NahimicSvc64",
+            "SearchUI",
+            "NahimicSvc32",
+            "YourPhone",
+            "SettingSyncHost",
+            "NVIDIA Web Helper",
+            "ApplicationFrameHost",
+            "CompPkgSrv",
+            "nvsphelper64",
+            "SecurityHealthSystray",
+            "NVIDIA Share",
+            "MsiTrueColor",
+            "MsiTrueColorHelper",
+            "unsecapp",
+            "SCM",
+            "plugin-container",
+            "igfxext",
+            "SteelSeriesEngine3",
+            "hamachi-2-ui",
+            "Dragon Center",
+            "IAStorIcon",
+            "Microsoft.Photos",
+            "LockApp",
+            "devenv",
+            "PerfWatson2",
+            "Microsoft.ServiceHub.Controller",
+            "ServiceHub.IdentityHost",
+            "ServiceHub.VSDetouredHost",
+            "ServiceHub.SettingsHost",
+            "ServiceHub.Host.CLR.x86",
+            "ServiceHub.RoslynCodeAnalysisService32",
+            "ServiceHub.ThreadedWaitDialog",
+            "ServiceHub.TestWindowStoreHost",
+            "ServiceHub.DataWarehouseHost",
+            "WindowsInternal.ComposableShell.Experiences.TextInput.InputApp",
+            "init",
+            "wslhost",
+            "WinStore.App",
+            "SystemSettings",
+            "MSBuild",
+            "VBCSCompiler",
+            "ScriptedSandbox64",
+            "WinFormsSurface",
+            "TrustedInstaller",
+            "TiWorker",
+            "SearchProtocolHost",
+            "SearchFilterHost",
+            "msvsmon",
+            "StandardCollector.Service"
+        };
+
         [DllImport("user32.dll")]
         public static extern IntPtr FindWindow(string strClassName, string strWindowName);
 
@@ -24,7 +139,7 @@ namespace Soundboard
         public Form1()
         {
             InitializeComponent();
-            populateBox(this.comboBox1);
+            updateBoxes();
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -36,16 +151,31 @@ namespace Soundboard
             var dataSource = new List<SoundProgram>();
             foreach (var process in Process.GetProcesses())
             {
-                dataSource.Add(new SoundProgram() { Name = process.ProcessName, pID = process.Id });
+                bool containsItem = invalidPrograms.Any(item => item == process.ProcessName);
+                if(!containsItem) 
+                {
+                    dataSource.Add(new SoundProgram() { Name = process.ProcessName, pID = process.Id });
+                }
             }
 
-            //Setup data binding
+            dataSource.Sort((x, y) => string.Compare(x.Name, y.Name));
+
             comboBox.DataSource = dataSource.Distinct().ToList();
             comboBox.DisplayMember = "Name";
             comboBox.ValueMember = "pID";
 
-            // make it readonly
             comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            updateBoxes();
+        }
+
+        private void updateBoxes() 
+        {
+            populateBox(this.comboBox1);
+            populateBox(this.comboBox2);
         }
     }
 }
