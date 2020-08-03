@@ -34,15 +34,13 @@ namespace Soundboard
         public void populateBox(ComboBox comboBox)
         {
             var dataSource = new List<SoundProgram>();
-            var pID = 0;
             foreach (var process in Process.GetProcesses())
             {
                 dataSource.Add(new SoundProgram() { Name = process.ProcessName, pID = process.Id });
             }
-            var data = new HashSet<SoundProgram>(dataSource).ToList();
 
             //Setup data binding
-            comboBox.DataSource = data;
+            comboBox.DataSource = dataSource.Distinct().ToList();
             comboBox.DisplayMember = "Name";
             comboBox.ValueMember = "pID";
 
@@ -56,6 +54,23 @@ public class SoundProgram
 {
     public string Name { get; set; }
     public int pID { get; set; }
+
+    public override bool Equals (object obj)
+    {
+
+        var item = obj as SoundProgram;
+
+        if (item == null)
+        {
+            return false;
+        }
+
+        return this.Name == item.Name;
+    }
+    public override int GetHashCode()
+    {
+        return this.Name.GetHashCode();
+    }
 }
 
 public class VolumeMixer
