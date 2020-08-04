@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.IO.Ports;
 
 namespace Soundboard
 {
@@ -150,14 +151,41 @@ namespace Soundboard
             updateBoxes();
             new Thread(() => 
             {
-                Thread.CurrentThread.IsBackground = true; 
-                /* run your code here */ 
-                while(true)
+                Thread.CurrentThread.IsBackground = true;
+
+                /* Serial Port Loop */
+                dataPort = new SerialPort("COM3");
+                dataPort.BaudRate = 9600;
+                dataPort.Parity = Parity.None;
+                dataPort.StopBits = StopBits.One;
+                dataPort.DataBits = 8;
+                dataPort.Handshake = Handshake.None;
+                dataPort.ReadTimeout = 100;
+
+                dataPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
+
+                dataPort.Open();
+
+                //string data;
+
+                /*while(true)
                 {
+                    data = dataPort.ReadLine();
                     VolumeMixer.SetApplicationVolume(prog1.pID, 50.0f);
-                }
+                }*/
+                // It never gets here but this is what you would do if you wanted to close the port
+                //dataPort.Close();
             }).Start();
 
+        }
+
+        private static void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
+        {
+            float maxAnalogValue = 1023f;
+            SerialPort sp = (SerialPort)sender;
+            string inData = sp.ReadLine();
+            string[] fixedData = inData.Split('-');
+            VolumeMixer.SetApplicationVolume(prog1.pID, (maxAnalogValue - float.Parse(fixedData[0])) / maxAnalogValue);
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
