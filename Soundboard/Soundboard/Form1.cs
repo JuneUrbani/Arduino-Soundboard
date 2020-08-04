@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace Soundboard
 {
     public partial class Form1 : Form
     {
+        SoundProgram prog1;
 
         List<String> invalidPrograms = new List<String>()
         {
@@ -136,14 +138,31 @@ namespace Soundboard
         [DllImport("user32.dll", SetLastError = true)]
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
 
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool AllocConsole();
+
         public Form1()
         {
+            AllocConsole();
+
             InitializeComponent();
             updateBoxes();
+            new Thread(() => 
+            {
+                Thread.CurrentThread.IsBackground = true; 
+                /* run your code here */ 
+                while(true)
+                {
+                    VolumeMixer.SetApplicationVolume(prog1.pID, 50.0f);
+                }
+            }).Start();
+
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            prog1 = comboBox1.SelectedItem as SoundProgram;
         }
 
         public void populateBox(ComboBox comboBox)
