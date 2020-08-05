@@ -26,37 +26,22 @@ namespace Soundboard
 
 
         static SerialPort dataPort;
+        static bool portSelected = false;
         public Form1()
         {
             //AllocConsole();
 
             InitializeComponent();
             updateBoxes();
-                Thread.CurrentThread.IsBackground = true;
-                string[] ports = SerialPort.GetPortNames();
 
-                Console.WriteLine("The following serial ports were found:");
+            populateSerialPort();
 
-                // Display each port name to the console.
-                foreach(string port in ports)
-                {
-                    Console.WriteLine(port);
-                }
-
-                /* Serial Port Loop */
-                dataPort = new SerialPort("COM4")
-                {
-                    BaudRate = 9600,
-                    Parity = Parity.None,
-                    StopBits = StopBits.One,
-                    DataBits = 8,
-                    Handshake = Handshake.None,
-                    ReadTimeout = 100
-                };
-
+            if (dataPort != null)
+            {
                 dataPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
-
                 dataPort.Open();
+                portSelected = true;
+            }
         }
 
         private static void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
@@ -124,7 +109,52 @@ namespace Soundboard
             populateBox(this.comboBox1);
             populateBox(this.comboBox2);
         }
+
+        private void populateSerialPort()
+        {
+            string[] ports = SerialPort.GetPortNames();
+            List<SoundSerialPort> portList = new List<SoundSerialPort>();
+            foreach (string port in ports)
+            {
+                portList.Add(new SoundSerialPort() { PortName = port});
+            }
+            this.comboBox6.DataSource = portList;
+            this.comboBox6.DisplayMember = "PortName";
+            this.comboBox6.ValueMember = "PortName";
+
+            this.comboBox6.DropDownStyle = ComboBoxStyle.DropDownList;
+        }
+
+        private void comboBox6_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SoundSerialPort p = comboBox6.SelectedItem as SoundSerialPort;
+            dataPort = new SerialPort(p.PortName)
+            {
+                BaudRate = 9600,
+                Parity = Parity.None,
+                StopBits = StopBits.One,
+                DataBits = 8,
+                Handshake = Handshake.None,
+                ReadTimeout = 100
+            };
+            if(!portSelected)
+            {
+                dataPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
+                dataPort.Open();
+                portSelected = true;
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            populateSerialPort();
+        }
     }
+}
+
+public class SoundSerialPort
+{
+    public string PortName { get; set; }
 }
 
 public class SoundProgram
